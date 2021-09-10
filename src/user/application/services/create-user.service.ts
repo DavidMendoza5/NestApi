@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import { User } from 'src/user/domain/model/user.model';
 import { IUserRepository } from 'src/user/domain/ports/user.repository.interface';
 import { CreateUserRequestDto } from 'src/user/dto/create.request.dto';
@@ -18,6 +19,7 @@ export class CreateUserService implements IBaseCreateUser {
     )
 
     const saved = await this._userRepository.save(user);
-    return saved;
+    const new_user = plainToClass(CreateUserResponseDto, saved);
+    return new_user;
   }
 }
